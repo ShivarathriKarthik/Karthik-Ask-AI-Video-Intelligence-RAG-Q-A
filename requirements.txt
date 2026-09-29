@@ -1,7 +1,8 @@
 streamlit
 python-dotenv
-yt-dlp[default]
+yt-dlp
 yt-dlp-ejs
+deno
 
 sarvamai
 
