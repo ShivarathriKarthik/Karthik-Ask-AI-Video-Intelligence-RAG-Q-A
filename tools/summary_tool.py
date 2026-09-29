@@ -3,8 +3,6 @@ import json
 import time
 import random
 
-import streamlit as st
-
 from dotenv import load_dotenv
 from google import genai
 from google.genai import types
@@ -19,78 +17,29 @@ load_dotenv()
 # CONFIGURATION
 # ============================================================
 
-def get_config_value(key: str, default=None):
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
-    # First try environment variable
-    value = os.getenv(key)
-
-    if value:
-        return value
-
-    # Then try Streamlit Secrets
-    try:
-
-        value = st.secrets.get(key)
-
-        if value:
-            return value
-
-    except Exception:
-
-        pass
-
-    return default
-
-
-GEMINI_API_KEY = get_config_value(
-    "GEMINI_API_KEY"
-)
-
-# Also support GOOGLE_API_KEY
-# if that is the name used in Streamlit Secrets.
-if not GEMINI_API_KEY:
-
-    GEMINI_API_KEY = get_config_value(
-        "GOOGLE_API_KEY"
-    )
-
-
-GEMINI_MODEL = get_config_value(
+GEMINI_MODEL = os.getenv(
     "GEMINI_MODEL",
     "gemini-3.5-flash-lite"
 )
 
-
 MAX_RETRIES = int(
-    get_config_value(
-        "GEMINI_MAX_RETRIES",
-        "5"
-    )
+    os.getenv("GEMINI_MAX_RETRIES", "5")
 )
-
 
 INITIAL_BACKOFF = float(
-    get_config_value(
-        "GEMINI_INITIAL_BACKOFF",
-        "2"
-    )
+    os.getenv("GEMINI_INITIAL_BACKOFF", "2")
 )
 
-
 MAX_BACKOFF = float(
-    get_config_value(
-        "GEMINI_MAX_BACKOFF",
-        "30"
-    )
+    os.getenv("GEMINI_MAX_BACKOFF", "30")
 )
 
 
 if not GEMINI_API_KEY:
-
     raise ValueError(
-        "GEMINI_API_KEY or GOOGLE_API_KEY "
-        "not found. Add it to .env locally or "
-        "Streamlit Cloud → Manage app → Settings → Secrets."
+        "GEMINI_API_KEY not found in .env"
     )
 
 
@@ -132,7 +81,6 @@ def call_gemini(
             )
 
             if not response.text:
-
                 raise ValueError(
                     "Gemini returned an empty response."
                 )
@@ -443,12 +391,10 @@ def create_summary(
         ).strip()
 
         if not text:
-
             print(
                 f"Skipping empty chunk "
                 f"{index + 1}."
             )
-
             continue
 
         print()
