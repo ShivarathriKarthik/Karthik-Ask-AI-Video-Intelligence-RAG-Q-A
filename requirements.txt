@@ -7,7 +7,8 @@ transformers
 numpy
 pydub
 moviepy
-yt-dlp
+yt-dlp[default]
+deno
 google-genai
 sarvamai
 ffmpeg-python
