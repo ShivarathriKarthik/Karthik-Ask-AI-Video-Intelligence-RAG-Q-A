@@ -119,11 +119,7 @@ def download_youtube_audio(
     ydl_opts = {
 
         # Try several audio-capable formats.
-        "format": (
-            "bestaudio/best/"
-            "bestvideo+bestaudio/"
-            "best"
-        ),
+        "format": "bestaudio/best",
 
         "outtmpl": output_template,
 
