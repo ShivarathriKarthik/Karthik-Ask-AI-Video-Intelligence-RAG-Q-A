@@ -51,15 +51,22 @@ def get_ffmpeg_location():
 
 def get_deno_location():
     """
-    Find Deno.
-
-    Deno is used by yt-dlp for YouTube EJS support.
+    Find Deno for yt-dlp YouTube EJS support.
     """
 
-    deno = find_executable("deno")
+    deno_path = find_executable("deno")
 
-    if deno:
-        return deno
+    if deno_path:
+        return deno_path
+
+    try:
+        deno_path = deno.find_deno_bin()
+
+        if deno_path:
+            return deno_path
+
+    except Exception:
+        pass
 
     return None
 
