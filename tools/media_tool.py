@@ -1,5 +1,6 @@
 import os
 import uuid
+import subprocess
 import yt_dlp
 
 from tools.source_model import Source
@@ -25,7 +26,9 @@ def get_audio_source(input_source: str) -> Source:
         exist_ok=True
     )
 
-    # YouTube URL
+    # ========================================================
+    # YOUTUBE URL HANDLING
+    # ========================================================
     if input_source.startswith(
         (
             "https://www.youtube.com/",
@@ -40,11 +43,8 @@ def get_audio_source(input_source: str) -> Source:
 
         ydl_opts = {
             "format": "bestaudio/best",
-
             "outtmpl": output_template,
-
             "noplaylist": True,
-
             "postprocessors": [
                 {
                     "key": "FFmpegExtractAudio",
@@ -52,8 +52,21 @@ def get_audio_source(input_source: str) -> Source:
                     "preferredquality": "192"
                 }
             ],
-
-            "quiet": False
+            "quiet": False,
+            
+            # --- NEW: ANTI-BOT BYPASS FOR STREAMLIT CLOUD ---
+            # These arguments force YouTube to treat the request 
+            # like an Android mobile device, bypassing web bot checks.
+            "extractor_args": {
+                "youtube": [
+                    "player_client=android",
+                    "player_skip=web"
+                ]
+            },
+            "http_headers": {
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+            }
+            # ------------------------------------------------
         }
 
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
@@ -80,7 +93,9 @@ def get_audio_source(input_source: str) -> Source:
             source_type="youtube"
         )
 
-    # Local audio/video
+    # ========================================================
+    # LOCAL FILE HANDLING
+    # ========================================================
     if os.path.isfile(input_source):
 
         source_name = os.path.splitext(
@@ -91,8 +106,6 @@ def get_audio_source(input_source: str) -> Source:
             audio_dir,
             "input.wav"
         )
-
-        import subprocess
 
         command = [
             "ffmpeg",
