@@ -5,6 +5,11 @@ import subprocess
 
 import yt_dlp
 
+try:
+    import deno
+except ImportError:
+    deno = None
+
 from tools.source_model import Source
 
 
