@@ -12,3 +12,4 @@ deno
 google-genai
 sarvamai
 ffmpeg-python
+bgutil-ytdlp-pot-provider
