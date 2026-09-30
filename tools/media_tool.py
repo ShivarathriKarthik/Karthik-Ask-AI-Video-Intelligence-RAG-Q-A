@@ -139,10 +139,6 @@ def download_youtube_audio(
 
         "continuedl": True,
 
-        # ----------------------------------------------------
-        # Convert downloaded media to WAV
-        # ----------------------------------------------------
-
         "postprocessors": [
 
             {
@@ -157,7 +153,11 @@ def download_youtube_audio(
         "prefer_ffmpeg": True,
 
         "ffmpeg_location": ffmpeg_location
-    }
+        "extractor_args": {
+            "youtube": {
+                "player_client": ["mweb"]
+            }
+        }
 
     # --------------------------------------------------------
     # Deno / EJS
