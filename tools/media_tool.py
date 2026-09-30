@@ -54,9 +54,7 @@ def get_audio_source(input_source: str) -> Source:
             ],
             "quiet": False,
             
-            # --- NEW: ANTI-BOT BYPASS FOR STREAMLIT CLOUD ---
-            # These arguments force YouTube to treat the request 
-            # like an Android mobile device, bypassing web bot checks.
+            # --- ANTI-BOT BYPASS FOR STREAMLIT CLOUD ---
             "extractor_args": {
                 "youtube": [
                     "player_client=android",
@@ -66,8 +64,14 @@ def get_audio_source(input_source: str) -> Source:
             "http_headers": {
                 "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
             }
-            # ------------------------------------------------
         }
+
+        # --- NEW: COOKIES SUPPORT ---
+        # If you upload a cookies.txt file to your GitHub root, yt-dlp will use it.
+        # This acts as your login session and bypasses the 403 error.
+        if os.path.exists("cookies.txt"):
+            ydl_opts["cookiefile"] = "cookies.txt"
+        # ----------------------------
 
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
 
