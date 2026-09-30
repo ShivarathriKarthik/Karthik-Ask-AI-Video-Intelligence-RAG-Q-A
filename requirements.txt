@@ -13,5 +13,5 @@ google-genai
 sarvamai
 ffmpeg-python
 bgutil-ytdlp-pot-provider
-yt-dlp
 youtube-transcript-api
+yt-dlp>=2024.04.09
