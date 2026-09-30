@@ -1,0 +1,5 @@
+# Netscape HTTP Cookie File
+# https://curl.haxx.se/rfc/cookie_spec.html
+# This is a generated file! Do not edit.
+
+.www.youtube.com	FALSE	/	TRUE	1791194164	OTZ	8771636_34_34__34_
